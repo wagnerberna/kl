@@ -10,7 +10,7 @@ const conn = async () => mongoClient.connect(MONGO_DB_URL, {
 })
   .then((connection) => connection.db(DB_NAME_MONGO))
   .catch((err) => {
-    console.error(err);
+    console.error(err); // eslint-disable-line
     process.exit(1);
   });
 
