@@ -4,9 +4,24 @@ const { conn } = require('./connection');
 const getAll = async () => conn().then((db) => db.collection('customers').find().toArray());
 
 const getById = async (id) => {
-  await ObjectId.isValid(id);
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
   const customer = conn().then((db) => db.collection('customers').findOne(ObjectId(id)));
   return customer;
+};
+
+const add = async (cpf, name, typeOfAccount) => conn().then(async (db) => {
+  const newCustomer = await db.collection('customers').insertOne({ cpf, name, typeOfAccount });
+  return newCustomer;
+});
+
+const update = async (id, cpf, name, typeOfAccount) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+  const customer = await conn().then((db) => db.collection('customers').updateOne({ _id: ObjectId(id) }, { $set: { cpf, name, typeOfAccount } }));
+  return { customer };
 };
 
 const exclude = async (id) => conn().then(async (db) => {
@@ -15,4 +30,6 @@ const exclude = async (id) => conn().then(async (db) => {
   return customer;
 });
 
-module.exports = { getAll, getById, exclude };
+module.exports = {
+  getAll, getById, add, update, exclude,
+};
