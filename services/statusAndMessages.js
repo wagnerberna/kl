@@ -9,4 +9,5 @@ exports.status = {
 exports.message = {
   success: { message: 'Ok' },
   serverError: { message: 'Server error.' },
+  cpfAlredyExist: { message: 'CPF alredy exist.' },
 };

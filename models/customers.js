@@ -20,7 +20,8 @@ const update = async (id, cpf, name, typeOfAccount) => {
   if (!ObjectId.isValid(id)) {
     return null;
   }
-  const customer = await conn().then((db) => db.collection('customers').updateOne({ _id: ObjectId(id) }, { $set: { cpf, name, typeOfAccount } }));
+  const customer = await conn().then((db) => db.collection('customers')
+    .updateOne({ _id: ObjectId(id) }, { $set: { cpf, name, typeOfAccount } }));
   return { customer };
 };
 
@@ -30,6 +31,11 @@ const exclude = async (id) => conn().then(async (db) => {
   return customer;
 });
 
+const findByCPF = async (cpf) => conn().then(async (db) => {
+  const findCustomerCPF = await db.collection('customers').findOne({ cpf });
+  return findCustomerCPF;
+});
+
 module.exports = {
-  getAll, getById, add, update, exclude,
+  getAll, getById, add, update, exclude, findByCPF,
 };

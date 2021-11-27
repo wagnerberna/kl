@@ -3,7 +3,7 @@ const { Router } = require('express');
 const router = Router();
 
 const customerModel = require('../models/customers');
-const { status, message } = require('../services');
+const { status, message, verifyExistCPF } = require('../services');
 
 router.get('/', async (req, res) => {
   try {
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', verifyExistCPF, async (req, res) => {
   try {
     const { cpf, name, typeOfAccount } = req.body;
     const newCustomer = await customerModel.add(cpf, name, typeOfAccount);
