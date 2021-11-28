@@ -30,12 +30,11 @@ const exclude = async (id) => conn().then(async (db) => {
   db.collection('customers').deleteOne({ _id: ObjectId(id) });
   return customer;
 });
-
-const findByCPF = async (cpf) => conn().then(async (db) => {
+const getByCPF = async (cpf) => conn().then(async (db) => {
   const findCustomerCPF = await db.collection('customers').findOne({ cpf });
   return findCustomerCPF;
 });
 
 module.exports = {
-  getAll, getById, add, update, exclude, findByCPF,
+  getAll, getById, add, update, exclude, getByCPF,
 };

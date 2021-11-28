@@ -3,12 +3,13 @@ const { Router } = require('express');
 const router = Router();
 
 const customerModel = require('../models/customers');
-const { status, message, verifyExistCPF } = require('../services');
+const {
+  status, message, checkDoubleCPF,
+} = require('../services');
 
 router.get('/', async (req, res) => {
   try {
     const customers = await customerModel.getAll();
-    console.log(customers);
     res.status(status.OK).json(customers);
   } catch (err) {
     res.status(status.SERVER_ERROR).json(message.serverError);
@@ -25,8 +26,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', verifyExistCPF, async (req, res) => {
+router.post('/', checkDoubleCPF, async (req, res) => {
   try {
+    console.log('teste controller post');
     const { cpf, name, typeOfAccount } = req.body;
     const newCustomer = await customerModel.add(cpf, name, typeOfAccount);
     res.status(status.CREATED).json(newCustomer);
@@ -40,7 +42,6 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { cpf, name, typeOfAccount } = req.body;
     const updateCustomer = await customerModel.update(id, cpf, name, typeOfAccount);
-    console.log(updateCustomer);
     res.status(status.OK).json(updateCustomer);
   } catch (err) {
     console.log(err);

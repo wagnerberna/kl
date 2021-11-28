@@ -1,8 +1,11 @@
 const { status, message } = require('./statusAndMessages');
-const { verifyExistCPF } = require('./customers');
+const { checkDoubleCPF } = require('./customers');
+const { checkIfExistCPF, balance } = require('./account');
 
 module.exports = {
   status,
   message,
-  verifyExistCPF,
+  checkDoubleCPF,
+  checkIfExistCPF,
+  balance,
 };
