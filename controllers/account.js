@@ -2,48 +2,61 @@ const { Router } = require('express');
 
 const router = Router();
 
-const customerModel = require('../models/customers');
+const accountModel = require('../models/account');
 const {
   status, message, checkIfExistCPF, balance,
 } = require('../services');
 
 router.get('/balance/', checkIfExistCPF, async (req, res) => {
   try {
-    console.log('teste controller 1.0');
     const { customerInfo } = req;
-    balance(customerInfo);
-
-    res.status(status.OK).json(customerInfo);
+    const sumStatement = balance(customerInfo.statement);
+    const result = { Customer: customerInfo.name, Balance: sumStatement };
+    res.status(status.OK).json(result);
   } catch (err) {
     res.status(status.SERVER_ERROR).json(message.serverError);
   }
 });
 
-router.get('/statement/', async (req, res) => {
+router.get('/statement/', checkIfExistCPF, async (req, res) => {
   try {
-    const customers = await customerModel.getAll();
-    // console.log(customers);
-    res.status(status.OK).json(customers);
+    const { customerInfo } = req;
+    const { name, statement } = customerInfo;
+    const sumStatement = balance(customerInfo.statement);
+    const result = { Customer: name, statement, Balance: sumStatement };
+    res.status(status.OK).json(result);
   } catch (err) {
     res.status(status.SERVER_ERROR).json(message.serverError);
   }
 });
 
-router.post('/deposit', async (req, res) => {
+router.post('/deposit', checkIfExistCPF, async (req, res) => {
   try {
-    const customers = await customerModel.getAll();
-    // console.log(customers);
-    res.status(status.OK).json(customers);
+    const {
+      description, amount,
+    } = req.body;
+    const { customerInfo } = req;
+    const id = customerInfo._id; // eslint-disable-line
+    const date = new Date();
+    const type = 'deposit';
+    const deposit = await accountModel.updateStatement(id, description, amount, type, date);
+    res.status(status.OK).json(deposit);
   } catch (err) {
     res.status(status.SERVER_ERROR).json(message.serverError);
   }
 });
 
-router.post('/withdraw', async (req, res) => {
+router.post('/withdraw', checkIfExistCPF, async (req, res) => {
   try {
-    const customers = await customerModel.getAll();
-    // console.log(customers);
-    res.status(status.OK).json(customers);
+    const {
+      description, amount,
+    } = req.body;
+    const { customerInfo } = req;
+    const id = customerInfo._id; // eslint-disable-line
+    const date = new Date();
+    const type = 'withdraw';
+    const withdraw = await accountModel.updateStatement(id, description, amount, type, date);
+    res.status(status.OK).json(withdraw);
   } catch (err) {
     res.status(status.SERVER_ERROR).json(message.serverError);
   }

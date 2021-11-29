@@ -2,10 +2,8 @@ const customerModel = require('../models/customers');
 const { status, message } = require('./statusAndMessages');
 
 const checkIfExistCPF = async (req, res, next) => {
-  console.log('teste service 1.0');
   const { cpf } = req.body;
   const findCustomerCPF = await customerModel.getByCPF(cpf);
-  console.log(findCustomerCPF);
   if (findCustomerCPF === null) {
     return res.status(status.NOT_FOUND).json(message.notExistCPF);
   }
@@ -13,8 +11,15 @@ const checkIfExistCPF = async (req, res, next) => {
   return next();
 };
 
-const balance = (customerInfo) => {
-  console.log(customerInfo);
+const balance = (statement) => {
+  console.log(statement);
+  const sumStatement = (statement.reduce((acc, el) => {
+    if (el.type === 'deposit') {
+      return acc + el.amount;
+    }
+    return acc - el.amount;
+  }, 0));
+  return sumStatement;
 };
 
 module.exports = { checkIfExistCPF, balance };
