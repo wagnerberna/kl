@@ -4,7 +4,7 @@ const router = Router();
 
 const accountModel = require('../models/account');
 const {
-  status, message, checkIfExistCpf, balance, validateCpf,
+  status, message, checkIfExistCpf, balance, validateCpf, validateAmount,
 } = require('../services');
 
 router.get('/balance/', validateCpf, checkIfExistCpf, async (req, res) => {
@@ -30,7 +30,7 @@ router.get('/statement/', validateCpf, checkIfExistCpf, async (req, res) => {
   }
 });
 
-router.post('/deposit', validateCpf, checkIfExistCpf, async (req, res) => {
+router.post('/deposit', validateCpf, checkIfExistCpf, validateAmount, async (req, res) => {
   try {
     const {
       description, amount,
@@ -46,7 +46,7 @@ router.post('/deposit', validateCpf, checkIfExistCpf, async (req, res) => {
   }
 });
 
-router.post('/withdraw', validateCpf, checkIfExistCpf, async (req, res) => {
+router.post('/withdraw', validateCpf, checkIfExistCpf, validateAmount, async (req, res) => {
   try {
     const {
       description, amount,

@@ -12,7 +12,6 @@ const checkIfExistCpf = async (req, res, next) => {
 };
 
 const balance = (statement) => {
-  console.log(statement);
   const sumStatement = (statement.reduce((acc, el) => {
     if (el.type === 'deposit') {
       return acc + el.amount;
@@ -22,4 +21,13 @@ const balance = (statement) => {
   return sumStatement;
 };
 
-module.exports = { checkIfExistCpf, balance };
+const validateAmount = async (req, res, next) => {
+  const { amount } = req.body;
+  const testAmount = typeof amount === 'number';
+  if (!testAmount) {
+    return res.status(status.BADREQUEST).json(message.errorValidAmount);
+  }
+  return next();
+};
+
+module.exports = { checkIfExistCpf, balance, validateAmount };

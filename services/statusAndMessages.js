@@ -13,4 +13,5 @@ exports.message = {
   notExistCpf: { message: 'CPF does not exist.' },
   errorValidCpf: { message: 'CPF type or format is not valid' },
   errorValidNameAndAccount: { message: 'Name or accountType is not valid' },
+  errorValidAmount: { message: 'Amount is not number' },
 };

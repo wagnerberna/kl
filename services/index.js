@@ -1,6 +1,6 @@
 const { status, message } = require('./statusAndMessages');
 const { checkDoubleCpf, validateCpf, validateNameAndAccount } = require('./customers');
-const { checkIfExistCpf, balance } = require('./account');
+const { checkIfExistCpf, balance, validateAmount } = require('./account');
 
 module.exports = {
   status,
@@ -10,4 +10,5 @@ module.exports = {
   balance,
   validateCpf,
   validateNameAndAccount,
+  validateAmount,
 };
