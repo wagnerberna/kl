@@ -1,13 +1,13 @@
 const customerModel = require('../models/customers');
 const { status, message } = require('./statusAndMessages');
 
-const checkIfExistCPF = async (req, res, next) => {
+const checkIfExistCpf = async (req, res, next) => {
   const { cpf } = req.body;
-  const findCustomerCPF = await customerModel.getByCPF(cpf);
-  if (findCustomerCPF === null) {
-    return res.status(status.NOT_FOUND).json(message.notExistCPF);
+  const findCustomerCpf = await customerModel.getByCpf(cpf);
+  if (findCustomerCpf === null) {
+    return res.status(status.NOT_FOUND).json(message.notExistCpf);
   }
-  req.customerInfo = findCustomerCPF;
+  req.customerInfo = findCustomerCpf;
   return next();
 };
 
@@ -22,4 +22,4 @@ const balance = (statement) => {
   return sumStatement;
 };
 
-module.exports = { checkIfExistCPF, balance };
+module.exports = { checkIfExistCpf, balance };

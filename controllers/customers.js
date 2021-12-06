@@ -4,7 +4,7 @@ const router = Router();
 
 const customerModel = require('../models/customers');
 const {
-  status, message, checkDoubleCPF,
+  status, message, checkDoubleCpf, validateCpf, validateNameAndAccount,
 } = require('../services');
 
 router.get('/', async (req, res) => {
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', checkDoubleCPF, async (req, res) => {
+router.post('/', validateCpf, validateNameAndAccount, checkDoubleCpf, async (req, res) => {
   try {
     console.log('teste controller post');
     const { cpf, name, typeOfAccount } = req.body;
@@ -37,7 +37,7 @@ router.post('/', checkDoubleCPF, async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateCpf, validateNameAndAccount, async (req, res) => {
   try {
     const { id } = req.params;
     const { cpf, name, typeOfAccount } = req.body;

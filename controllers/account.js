@@ -4,10 +4,10 @@ const router = Router();
 
 const accountModel = require('../models/account');
 const {
-  status, message, checkIfExistCPF, balance,
+  status, message, checkIfExistCpf, balance, validateCpf,
 } = require('../services');
 
-router.get('/balance/', checkIfExistCPF, async (req, res) => {
+router.get('/balance/', validateCpf, checkIfExistCpf, async (req, res) => {
   try {
     const { customerInfo } = req;
     const sumStatement = balance(customerInfo.statement);
@@ -18,7 +18,7 @@ router.get('/balance/', checkIfExistCPF, async (req, res) => {
   }
 });
 
-router.get('/statement/', checkIfExistCPF, async (req, res) => {
+router.get('/statement/', validateCpf, checkIfExistCpf, async (req, res) => {
   try {
     const { customerInfo } = req;
     const { name, statement } = customerInfo;
@@ -30,7 +30,7 @@ router.get('/statement/', checkIfExistCPF, async (req, res) => {
   }
 });
 
-router.post('/deposit', checkIfExistCPF, async (req, res) => {
+router.post('/deposit', validateCpf, checkIfExistCpf, async (req, res) => {
   try {
     const {
       description, amount,
@@ -46,7 +46,7 @@ router.post('/deposit', checkIfExistCPF, async (req, res) => {
   }
 });
 
-router.post('/withdraw', checkIfExistCPF, async (req, res) => {
+router.post('/withdraw', validateCpf, checkIfExistCpf, async (req, res) => {
   try {
     const {
       description, amount,
